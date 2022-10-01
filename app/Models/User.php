@@ -3,13 +3,19 @@
 namespace App\Models;
 
 use App\Enums\UserTypeEnum;
+use App\Events\UserRetrived;
+use App\Models\Post;
+use App\Models\Supervision;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Prettus\Repository\Contracts\Transformable;
+use Prettus\Repository\Traits\TransformableTrait;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Transformable
 {
-    use Notifiable;
+    use Notifiable, TransformableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +23,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name',
+        'last_name',
+        'email',
+        'password',
     ];
 
     protected $attributes = [
@@ -30,7 +39,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'email_verified_at', 'last_login'
     ];
 
     /**
@@ -45,22 +54,68 @@ class User extends Authenticatable
 
     # Relationships
 
+    /**
+     * From the point of view of a Blogger, it has many Supervisors
+     * @return [type] [description]
+     */
     public function supervisors()
     {
         return $this->belongsToMany(User::class, 'supervisions', 'blogger_id', 'supervisor_id')
-            ->as('supervision')
+            ->isSupervisor()
             ->withTimestamps();
     }
 
+    /**
+     * From the point of view of a Supervisor, it has many Bloggers
+     * @return [type] [description]
+     */
     public function bloggers()
     {
         return $this->belongsToMany(User::class, 'supervisions', 'supervisor_id', 'blogger_id')
-            ->as('supervised')
+            ->isBlogger()
             ->withTimestamps();
     }
 
+    /**
+     * Any user can have many Posts
+     * @return [type] [description]
+     */
     public function posts()
     {
         return $this->hasMany(Post::class, 'author_id');
+    }
+
+    # Scopes
+
+    public function scopeIsAdmin($query)
+    {
+        return $query->where('user_type', UserTypeEnum::ADMIN);
+    }
+
+    public function scopeIsSupervisor($query)
+    {
+        return $query->where('user_type', UserTypeEnum::SUPERVISOR);
+    }
+
+    public function scopeIsBlogger($query)
+    {
+        return $query->where('user_type', UserTypeEnum::BLOGGER);
+    }
+
+    # Accessors
+
+    public function isAdmin()
+    {
+        return $this->user_type === UserTypeEnum::ADMIN;
+    }
+
+    public function isSupervisor()
+    {
+        return $this->user_type === UserTypeEnum::SUPERVISOR;
+    }
+
+    public function isBlogger()
+    {
+        return $this->user_type === UserTypeEnum::BLOGGER;
     }
 }

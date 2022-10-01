@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Support\Str;
+use App\Enums\UserTypeEnum;
+use App\Models\User;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +16,28 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Model\User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'remember_token' => Str::random(10),
     ];
 });
+
+$factory->state(User::class, 'admin', [
+    'first_name' => 'Admin',
+    'last_name' => 'User',
+    'email' => 'admin@blog.test',
+    'user_type' => UserTypeEnum::ADMIN
+]);
+
+$factory->state(User::class, 'supervisor', [
+    'user_type' => UserTypeEnum::SUPERVISOR
+]);
+
+$factory->state(User::class, 'blogger', [
+    'user_type' => UserTypeEnum::BLOGGER
+]);

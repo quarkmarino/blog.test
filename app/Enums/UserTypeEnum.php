@@ -2,16 +2,14 @@
 
 namespace App\Enums;
 
-class UserTypeEnum
+use App\Enums\Contracts\Enumerable;
+use App\Enums\Traits\EnumerableTrait;
+
+class UserTypeEnum implements Enumerable
 {
+    use EnumerableTrait;
+
     const ADMIN = 'admin';
-    const SUPERVISOR = 'spervisor';
+    const SUPERVISOR = 'supervisor';
     const BLOGGER = 'blogger';
-
-    // protected $type = null;
-
-    // public function tryFrom($type)
-    // {
-    //     return (new \ReflectionClass(Static::class))->getConstants();
-    // }
 }
