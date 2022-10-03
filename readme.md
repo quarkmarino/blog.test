@@ -1,71 +1,238 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
-
+<!-- PROJECT LOGO -->
+<br />
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+  <a href="https://github.com/quarkmarino/blog.test">
+    <img src="logo.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">A full stack demo project of a blog with Laravel & jQuery</h3>
+
+  <p align="center">
+    A web site allows the managements of 2 type of resources, Users, and Blog posts.
+    <br />
+    <a href="https://github.com/quarkmarino/blog.test">View Demo</a>
+  </p>
 </p>
 
-## About Laravel
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#blog-guidelines">Blog Guidelines</a>
+      <ul>
+        <li><a href="#task-description">Task description</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#requirements">Requirements</a>
+      <ul>
+        <li><a href="#users">Users</a></li>
+        <li><a href="#pages">Pages</a></li>
+        <li><a href="#admin">Admin</a></li>
+        <li><a href="#supervisor">Supervisor</a></li>
+        <li><a href="#blogger">Blogger</a></li>
+      </ul>
+    </li>
+    <li><a href="#instalation">Installation</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Blog Guidelines
 
-## Learning Laravel
+Technologies that needs to be used for developing the code:
+- [x] Laravel version 5.7 https://laravel.com/docs/5.7
+- [x] Twitter bootstrap min version 3.3
+    - [x] with Flex layout is preferable
+- [x] Jquery HTML/CSS
+- [x] Mysql or Mariadb
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Please share the code via git once ready
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost you and your team's skills by digging into our comprehensive video library.
+## Task description
 
-## Laravel Sponsors
+The test project is a simple blog creation and management application with different user types having different access.
+This project will give us an idea about your Laravel skills and code quality. Major efforts in css styling is not required.
+Basic usage of twitter bootstrap and jquery is required.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Requirements
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
+### Users
 
-## Contributing
+1. There are 3 different types of users:
+    * [x] Admin
+    * [x] Supervisor
+    * [x] Blogger
+    ---
+    - [x] By default all new users are added as ‘Blogger’.
+    - [x] Create a database seeder for the initial ‘Admin’ account
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. The fields for users are:
+    > Please add any additional fields as you seem necessary.
+    * [x] first name
+    * [x] last name
+    * [x] email
+    * [x] user type
+    * [x] last login
+        * [x] Update last_login field at login event.
+3. The fields for blogs are:
+    > Please add any additional fields as you seem necessary.
+    * [x] blog name
+    * [x] description
 
-## Security Vulnerabilities
+4. Each user will have different access according to their user type.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    4.1. Admins have full access over users and blogs, and can:
+    * [x] view (index)
+    * [x] search (query)
+    * [x] add (post)
+    * [x] edit (put)
+    * [x] delete (delete)
 
+    4.2. Supervisors have the following access over their own blogs and for the ‘Blogger’ users assigned under them, they can:
+    * [x] view (index)
+    * [x] search (query)
+    * [x] add (post)
+    * [x] edit (put)
+    * [x] delete (delete)
+
+    4.3. Bloggers can (over their own blogs):
+    * [x] view (index)
+    * [x] search (search)
+    * [x] add (post)
+    * [x] edit (put)
+    * [x] delete (delete)
+
+### Pages
+
+Create the following pages:
+* [x] Login
+* [x] Registration
+---
+* [x] Admin dashboard
+* [x] Supervisor dashboard
+* [x] Blogger dashboard
+---
+* [x] Users page
+* [x] Supervisors page
+* [x] Blogs page
+---
+
+### Admin
+Will have access to the following pages:
+* [x] Admin dashboard
+* [x] Users page
+* [x] Supervisors page
+* [x] Blogs page
+
+1. ‘Admin dashboard’. The dashboard will list:
+    * [x] Their personal details.
+    * [x] They can update their personal details via a bootstrap modal.
+    * [x] The dashboard will also list the total number of blogs (posts) and users by user types.
+
+2. ‘Users page’
+    * [x] This page will list all the users with pagination of 20.
+    * Admins can do the following for users from this page
+        * [x] create
+        * [x] edit
+        * [x] delete
+    * [x] The admin users can filter users by user types.
+    * [x] Many to Many (Supervisor-Blogger relationship)
+    * [x] Admins can assign multiple ‘Blogger’ users to a ‘Supervisor’ user account and a ‘Blogger’ can also be under multiple ‘Supervisor’ users.
+
+3. ‘Supervisors page’
+    * [x] This page will list out all the ‘Supervisor’ users and the ‘Blogger’ users that are under them.
+
+4. ‘Blogs page’
+    * [x] This page will list out blogs with pagination of 20 from all the users types:
+    * ‘Admin’
+    * ‘Supervisor’
+    * ‘Blogger’
+* The admins can do the following, over any of the listed blogs:
+    * [x] search the blogs
+    * [x] add
+    * [x] edit
+    * [x] delete
+
+### Supervisor
+Will have access to the following pages:
+* [x] Supervisor dashboard
+* [x] Users page
+* [x] Blogs page
+
+1. Supervisor dashboard’. The dashboard will list their personal details.
+    * [x] They can update their personal details via a bootstrap modal.
+    * [x] The dashboard will also list the total number of blogs and users that are assigned to them as:
+        * ‘Blogger’
+
+2. ‘Users page’
+    * [x] This page will list out all the ‘Blogger’ users assigned to the supervisor account.
+    * [x] They can only view these details but can’t change anything.
+
+3.  ‘Blogs page’
+    * [x] This page will list out blogs created by them and from the ‘Blogger’ users that are assigned under them with the pagination of 20.
+    * The supervisors can do the following, over any of the listed blogs :
+        * [x] search the blogs
+        * [x] add
+        * [x] edit
+        * [x] delete
+
+### Blogger
+Will have access to the following pages:
+* [x] Blogger dashboard
+* [x] Blogs page
+
+1. ‘Blogger dashboard’
+    The dashboard will list:
+    * [x] Their personal details
+        * [x] They can update their personal details via a bootstrap modal.
+    * [x] Last login
+    * [x] The number of blogs that they have created.
+
+2. ‘Blogs page’:
+    * [x] This page lists all the blogs created by the user with pagination of 20
+    * [x] It must have ability to search content for the blogs via a search field.
+    * [x] The bloggers can do the following over the blogs from this page:
+        * [x] create
+        * [x] edit
+        * [x] delete
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone git@github.com:quarkmarino/blog.test.git
+   ```
+2. Install Composer dependencies
+   ```sh
+   cd blog.test
+   composer install
+   ```
+3. Run artisan migrations
+   ```sh
+   art migrate
+   ```
+4. Run artisan db seeders (admin user only sedding or full db seeding)
+  4.1 Run admin user seeder only
+   ```sh
+   art db:seed --class=AdminUserSeeder
+   ```
+  4.2 Run full db seeder (with admin user included)
+5. Visit the running server
+    * open [localhost](http://localhost)
+
+<!-- LICENSE -->
 ## License
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Distributed under the MIT License. See `LICENSE` for more information.
+
+<!-- CONTACT -->
+## Contact
+
+Jose Mariano Escalera Sierra - [@quarkmarino](https://twitter.com/quarkmarino) - mariano.pualiu@gmail.com
+
+Project Link: [https://github.com/quarkmarino/blog.test](https://github.com/quarkmarino/blog.test)

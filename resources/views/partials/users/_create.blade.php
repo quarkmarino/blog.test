@@ -101,6 +101,10 @@
                     window.location.replace(`{{ route('users.page') }}?search=id:${response.id}`);
                 })
                 .fail(function(jqXHR){
+                    if (jqXHR.status == 403) {
+                        $('#page-toast .toast-body').html(jqXHR.responseJSON.message);
+                        $('#page-toast').toast('show');
+                    }
                     if (jqXHR.status == 422) {
                         $.each(jqXHR.responseJSON.errors, function(key, errors){
                             $(`#user-create-modal .${key}-errors`).html(errors[0]);

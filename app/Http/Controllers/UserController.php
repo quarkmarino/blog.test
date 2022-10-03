@@ -30,27 +30,45 @@ class UserController extends Controller
 
         $user = Auth::user();
 
-        $this->userRepository->pushCriteria(app(RequestCriteria::class));
-
         if ($user->user_type === UserTypeEnum::SUPERVISOR) {
-            $this->userRepository->scopeQuery(function($query){
-                return $query->isBlogger();
+            $this->userRepository->scopeQuery(function($query) use ($user){
+                return $query->isBlogger()->ofSupervisor($user);
             });
         }
 
         $users = $this->userRepository
-            ->paginate(config('pagination.users')/*, $columns = ['*']*/);
+            ->pushCriteria(app(RequestCriteria::class))
+            ->paginate(config('pagination.users'));
 
         $supervisors = User::isSupervisor()->get();
 
-        $searchFilters = collect(array_filter(explode(';', request()->get('search'))))->mapWithKeys(function ($filter) {
-            $filter = explode(':', $filter);
-            return [$filter[0] => $filter[1]];
-        });
+        // TODO: make it fully collection procesed
+        $searchFilters = collect(array_filter(explode(';', request()->get('search'))))
+            ->mapWithKeys(function ($filter) {
+                $filter = explode(':', $filter);
+                return [$filter[0] => $filter[1]];
+            });
 
         return view('users')
             ->with('users', $users)
             ->with('supervisors', $supervisors)
             ->with('searchFilters', $searchFilters);
+    }
+
+    /**
+     * Display a listing of the supervisors with its bloggers paginated by 20.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function supervisors()
+    {
+        $this->authorize('supervisors', User::class);
+
+        $supervisors = User::isSupervisor()
+            ->with('bloggers')
+            ->paginate(config('pagination.users'));
+
+        return view('supervisors')
+            ->with('supervisors', $supervisors);
     }
 }

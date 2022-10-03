@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Supervision;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -16,7 +17,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 class User extends Authenticatable implements Transformable
 {
-    use Notifiable, TransformableTrait;
+    use Notifiable, TransformableTrait, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -51,10 +52,7 @@ class User extends Authenticatable implements Transformable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_login' => 'datetime',
-    ];
-
-    protected $dispatchesEvents = [
-        'deleted' => UserDeleting::class,
+        'deleted_at' => 'datetime',
     ];
 
     # Relationships
@@ -66,7 +64,6 @@ class User extends Authenticatable implements Transformable
     public function supervisors()
     {
         return $this->belongsToMany(User::class, 'supervisions', 'blogger_id', 'supervisor_id')
-            // ->isSupervisor()
             ->withTimestamps();
     }
 
@@ -77,7 +74,6 @@ class User extends Authenticatable implements Transformable
     public function bloggers()
     {
         return $this->belongsToMany(User::class, 'supervisions', 'supervisor_id', 'blogger_id')
-            // ->isBlogger()
             ->withTimestamps();
     }
 
@@ -105,6 +101,13 @@ class User extends Authenticatable implements Transformable
     public function scopeIsBlogger($query)
     {
         return $query->where('user_type', UserTypeEnum::BLOGGER);
+    }
+
+    public function scopeOfSupervisor($query, User $user)
+    {
+        return $query->whereHas('supervisors', function($supervisors) use ($user) {
+            return $supervisors->where('id', $user->id);
+        });
     }
 
     # Accessors

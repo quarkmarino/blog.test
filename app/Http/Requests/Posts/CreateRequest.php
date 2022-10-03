@@ -13,7 +13,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'blog_name' => 'required|between:3,255',
+            'published_at' => 'nullable|date',
         ];
     }
 }

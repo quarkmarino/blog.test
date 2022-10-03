@@ -9,7 +9,7 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    public function before($user, $ability)
+    public function before(User $user, $ability)
     {
         return $user->is_admin ?: null;
     }
@@ -23,6 +23,17 @@ class UserPolicy
     public function index(User $user)
     {
         return $user->is_supervisor;
+    }
+
+    /**
+     * Determine whether the user can list users.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function supervisors(User $user)
+    {
+        return false;
     }
 
     /**

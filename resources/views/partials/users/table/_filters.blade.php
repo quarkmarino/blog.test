@@ -25,17 +25,12 @@
     </th>
     <th scope="col">
         <input type="date" class="form-control form-control-sm user-filter" name="last_login" value="{{ $searchFilters->get('last_login') }}" data-toggle="tooltip" data-placement="top" title="{{ __('user.title.last_login') }}">
-        {{-- <input type="time" class="form-control form-control-sm user-filter" name="last_login-time"> --}}
     </th>
     <th scope="">
-        <div class="btn-toolbar d-flex" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group" role="group" aria-label="Search & Filter">
-                <button class="btn btn-success btn-sm" id="search-users">Search</button>
-                <button class="btn btn-info btn-sm" id="filter-users">Filter</button>
-            </div>
-            <div class="btn-group" role="group" aria-label="Fields Clearing">
-                <button class="btn btn-warning btn-sm" id="clear-filters">Clear</button>
-            </div>
+        <div class="btn-group" role="group" aria-label="Search & Filter">
+            <button class="btn btn-primary btn-sm" id="search-users">Search</button>
+            <button class="btn btn-info btn-sm" id="filter-users">Filter</button>
+            <button class="btn btn-outline-dark btn-sm" id="clear-filters">Clear</button>
         </div>
     </th>
 </tr>

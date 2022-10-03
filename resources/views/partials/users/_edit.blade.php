@@ -12,6 +12,19 @@
                 <form>
                     <input type="hidden" id="edit-id">
                     <div class="form-group row">
+                        <label for="user_type" class="col-sm-3 col-form-label">{{ __('user.title.user_type') }}</label>
+                        <div class="col-sm-9">
+                            <select class="form-control form-control-sm user-edit-field" name="user_type" id="edit-user_type" placeholder="{{ __('user.title.user_type') }}">
+                                @foreach(App\Enums\UserTypeEnum::options() as $userType)
+                                    <option value="{{ $userType }}" {{ $userType == App\Enums\UserTypeEnum::ADMIN ? 'disabled' : '' }}>
+                                        {{ __('user.title.types.' . $userType) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger error-message user_type-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="first_name" class="col-sm-3 col-form-label">{{ __('user.title.first_name') }}</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control user-edit-field" name="first_name" id="edit-first_name">
@@ -32,12 +45,10 @@
                             <span class="text-danger error-message email-errors"></span>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row" id="edit-supervisors-field-row">
                         <label for="supervisors" class="col-sm-3 col-form-label">{{ __('user.title.supervisors') }}</label>
                         <div class="col-sm-9">
                             <select multiple class="form-control form-control-sm user-edit-field" name="supervisors" id="edit-supervisors">
-                                {{-- <option value="" disabled>-- {{ __('user.title.supervisors') }} --</option> --}}
-
                                 @foreach($supervisors as $supervisor)
                                     <option class="supervisor-option" value="{{ $supervisor->id }}">
                                         ({{ $supervisor->id }}) {{ $supervisor->full_name }}
@@ -46,7 +57,6 @@
                             </select>
                             <span class="text-danger error-message supervisors-errors"></span>
                         </div>
-
                     </div>
                 </form>
             </div>
@@ -65,9 +75,11 @@
                 var userId = $('#edit-id').val();
 
                 var userData = {
+                    'user_type': $('#edit-user_type').val(),
                     'first_name': $('#edit-first_name').val(),
                     'last_name': $('#edit-last_name').val(),
                     'email': $('#edit-email').val(),
+                    'supervisors': $('#edit-supervisors').val(),
                 };
 
                 $.ajaxSetup({
@@ -96,6 +108,10 @@
                     });
                 })
                 .fail(function(jqXHR){
+                    if (jqXHR.status == 403) {
+                        $('#page-toast .toast-body').html(jqXHR.responseJSON.message);
+                        $('#page-toast').toast('show');
+                    }
                     if (jqXHR.status == 422) {
                         $.each(jqXHR.responseJSON.errors, function(key, errors){
                             $(`#user-edit-modal .${key}-errors`).html(errors[0]);

@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\UserTypeEnum;
+use App\Enums\PostTypeEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Users;
-use App\Models\User;
+use App\Http\Requests\Posts;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Prettus\Repository\Criteria\RequestCriteria;
 
-class UserController extends Controller
+class PostController extends Controller
 {
 
-    public function show(User $user)
+    public function show(Post $post)
     {
         return strpos(request()->headers->get('Content-Type'), 'text/html') === 0
-            ? view('partials.users.table._row')->with('user', $user)
-            : $user->append('supervisor_ids');
+            ? view('partials.posts.table._row')->with('post', $post)
+            : $post;
     }
 
     /**
@@ -26,18 +26,16 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Users\CreateRequest $request)
+    public function store(Posts\CreateRequest $request)
     {
-        $this->authorize('create', User::class);
+        // $this->authorize('create', Post::class);
 
-        $user = User::make($request->input())
-            ->forceFill([
-                'password' => $request->password,
-                'user_type' => $request->user_type
-            ]);
+        $user = Auth::user();
 
-        return $user->save()
-            ? $user
+        $post = new Post($request->input());
+
+        return $user->posts()->save($post)
+            ? $post
             : response('resource update failed', 400);
     }
 
@@ -48,12 +46,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Users\UpdateRequest $request, User $user)
+    public function update(Posts\UpdateRequest $request, Post $post)
     {
-        $this->authorize('manage', $user);
+        $this->authorize('manage', $post);
 
-        return $user->fill($request->input())->save()
-            ? $user
+        return $post->fill($request->input())->save()
+            ? $post
             : response('resource updated failed', 400);
     }
 
@@ -63,12 +61,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Post $post)
     {
-        $this->authorize('manage', $user);
+        $this->authorize('manage', $post);
 
-        return $user->delete()
-            ? $user
+        return $post->delete()
+            ? $post
             : response('resource delete failed', 400);
     }
 }

@@ -28,8 +28,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('post.manage', 'PostPolicy@manage');
-        Gate::define('user.manage', 'UserPolicy@manage');
+        // Gate::define('post.manage', 'PostPolicy@manage');
+        // Gate::define('user.manage', 'UserPolicy@manage');
 
         // Gate::resource('users', 'App\Policies\UserPolicy');
         // Gate::resource('posts', 'App\Policies\PostPolicy');

@@ -20,11 +20,12 @@ class PostRepositoryEloquent extends BaseRepository implements PostRepository
      * @var array
      */
     protected $fieldSearchable = [
+        'id',
         'blog_name' => 'like',
-        'author.first_name' => 'like',
-        'author.last_name' => 'like',
-        'author.email',
-        'author.id',
+        'description' => 'like',
+        'published_at',
+        'author.user_type',
+        'author.full_name' => 'like',
     ];
 
     /**

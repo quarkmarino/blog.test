@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container">
-    <h3><strong>{{ __('user.title.types.' . $user->user_type) }}'s</strong> Dashboard</h3>
+    <h3><strong>{{ __('user.title.types.' . $user->user_type) }}'s</strong> Dashboard Page</h3>
     @if (session('status'))
         <div class="row justify-content-center">
             <div class="col-md-12 alert alert-success" role="alert">
@@ -23,6 +23,11 @@
 </div>
 @endsection
 
-{{-- @push('scripts')
-    <script src="/dashboard.js"></script>
-@endpush --}}
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.toast').toast({delay: 3500});
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+@endpush

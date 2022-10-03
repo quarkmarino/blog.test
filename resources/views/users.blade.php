@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Users</h2>
+    <h2>Users Page</h2>
     <div class="row">
         <div class="col-sm-12">
             @include('partials.users._actions')
@@ -15,3 +15,12 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.toast').toast({delay: 3500});
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+@endpush

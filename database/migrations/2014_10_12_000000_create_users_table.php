@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->string('api_token', 60)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -16,6 +16,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/users">Users</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/supervisors">Supervisors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/blogs">Posts</a>
+                </li>
             </ul>
 
             <!-- Right Side Of Navbar -->

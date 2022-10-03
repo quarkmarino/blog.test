@@ -36,22 +36,34 @@
 
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('users.update', '') }}/" + userId,
+                    url: "{{ route('users.show', '') }}/" + userId,
                     dataType: "json",
                     success: function(response){
                         $('.error-message').html('');
 
                         $('#edit-id').val(response.id);
+                        $('#edit-user_type').val(response.user_type);
                         $('#edit-first_name').val(response.first_name);
                         $('#edit-last_name').val(response.last_name);
                         $('#edit-email').val(response.email);
 
-                        if (response.user_type == '{{ App\Enums\UserTypeEnum::BLOGGER }}') {
-                            $('.supervisor-option').attr('selected', false);
+                        $('.supervisor-option').prop('selected', false).prop('disabled', true);
 
-                            $(response.supervisor_ids).each(function(key, supervisorId){
-                                $(`.supervisor-option[value="${supervisorId}"]`).attr('selected', true)
-                            });
+                        $('#edit-user_type').prop('disabled', false);
+                        $('#edit-user_type.option[value="{{ App\Enums\UserTypeEnum::ADMIN }}"]').prop('disabled', true)
+
+                        switch (response.user_type) {
+                            case '{{ App\Enums\UserTypeEnum::ADMIN }}':
+                                $('#edit-user_type').prop('disabled', true);
+                                break;
+                            case '{{ App\Enums\UserTypeEnum::SUPERVISOR }}':
+                                break;
+                            case '{{ App\Enums\UserTypeEnum::BLOGGER }}':
+                                $('.supervisor-option').prop('disabled', false);
+                                $(response.supervisor_ids).each(function(key, supervisorId){
+                                    $(`.supervisor-option[value="${supervisorId}"]`).prop('selected', true)
+                                });
+                                break;
                         }
                     }
                 });
@@ -61,7 +73,6 @@
                 e.preventDefault();
 
                 var userId = $(this).val();
-                console.log(userId);
 
                 $.ajaxSetup({
                     headers: {
@@ -78,11 +89,10 @@
                     location.reload();
                 })
                 .fail(function(jqXHR){
-                    // if (jqXHR.status == 422) {
-                    //     $.each(jqXHR.responseJSON.errors, function(key, errors){
-                    //         $(`#user-edit-modal .${key}-errors`).html(errors[0]);
-                    //     });
-                    // }
+                    if (jqXHR.status == 403) {
+                        $('#page-toast .toast-body').html(jqXHR.responseJSON.message);
+                        $('#page-toast').toast('show');
+                    }
                 });
             });
         });

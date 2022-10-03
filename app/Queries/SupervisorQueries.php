@@ -3,6 +3,7 @@
 namespace App\Queries;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 

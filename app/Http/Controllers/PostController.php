@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserTypeEnum;
 use App\Http\Requests\Posts;
 use App\Repositories\Contracts\PostRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Prettus\Repository\Criteria\RequestCriteria;
 
 class PostController extends Controller
 {
-    public function __construct(PostRepository $repository){
-        $this->repository = $repository;
+    public function __construct(PostRepository $postRepository){
+        $this->postRepository = $postRepository;
     }
 
     /**
@@ -21,65 +24,33 @@ class PostController extends Controller
     {
         $user = Auth::user();
 
-        // $posts = Post::paginate();
+        $this->postRepository
+            ->with('author')
+            ->pushCriteria(app(RequestCriteria::class));
 
-        $posts = $this->repository->paginate($limit = null, $columns = ['*']);
+        $this->postRepository->scopeQuery(function($posts) use ($user) {
+            switch ($user->user_type) {
+                case UserTypeEnum::BLOGGER:
+                    return $posts->ofSupervisor($user);
+                case UserTypeEnum::SUPERVISOR:
+                    return $posts->ofSupervisor($user);
+                case UserTypeEnum::ADMIN:
+                    return $posts;
+            }
+        });
 
-        if($request->ajax()){
-            return $posts;
-        }
+        $posts = $this->postRepository->paginate(config('pagination.posts'));
 
-        return view('posts.index');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Posts\CreateRequest $request)
-    {
-        // $this->authorize('create', Post::class);
+        // TODO: make it fully collection procesed
+        $searchFilters = collect(array_filter(explode(';', request()->get('search'))))
+            ->mapWithKeys(function ($filter) {
+                $filter = explode(':', $filter);
+                return [$filter[0] => $filter[1]];
+            });
 
-        return Post::create($request->input());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Posts\UpdateRequest $request, Post $post)
-    {
-        $this->authorize('manage', $post);
-
-        $post->fill($request->input())->save();
-
-        return $post;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('posts')
+            ->with('posts', $posts)
+            ->with('searchFilters', $searchFilters);
     }
 }
