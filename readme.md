@@ -222,8 +222,6 @@ Will have access to the following pages:
    art db:seed --class=AdminUserSeeder
    ```
   4.2 Run full db seeder (with admin user included)
-5. Visit the running server
-    * open [localhost](http://localhost)
 
 <!-- LICENSE -->
 ## License
