@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Posts;
 use App\Repositories\Contracts\PostRepository;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class PostController extends Controller
     {
         $user = Auth::user();
 
-        $posts = Post::paginate();
+        // $posts = Post::paginate();
 
         $posts = $this->repository->paginate($limit = null, $columns = ['*']);
 
@@ -37,9 +38,11 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Posts\CreateRequest $request)
     {
-        //
+        // $this->authorize('create', Post::class);
+
+        return Post::create($request->input());
     }
 
     /**
@@ -60,9 +63,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Posts\UpdateRequest $request, Post $post)
     {
-        //
+        $this->authorize('manage', $post);
+
+        $post->fill($request->input())->save();
+
+        return $post;
     }
 
     /**

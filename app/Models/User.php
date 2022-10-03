@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Enums\UserTypeEnum;
-use App\Events\UserRetrived;
 use App\Models\Post;
 use App\Models\Supervision;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -26,7 +27,7 @@ class User extends Authenticatable implements Transformable
         'first_name',
         'last_name',
         'email',
-        'password',
+        // 'password',
     ];
 
     protected $attributes = [
@@ -39,7 +40,7 @@ class User extends Authenticatable implements Transformable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'email_verified_at', 'last_login'
+        'password', 'remember_token', 'email_verified_at', 'last_login', 'api_token'
     ];
 
     /**
@@ -52,6 +53,10 @@ class User extends Authenticatable implements Transformable
         'last_login' => 'datetime',
     ];
 
+    protected $dispatchesEvents = [
+        'deleted' => UserDeleting::class,
+    ];
+
     # Relationships
 
     /**
@@ -61,7 +66,7 @@ class User extends Authenticatable implements Transformable
     public function supervisors()
     {
         return $this->belongsToMany(User::class, 'supervisions', 'blogger_id', 'supervisor_id')
-            ->isSupervisor()
+            // ->isSupervisor()
             ->withTimestamps();
     }
 
@@ -72,7 +77,7 @@ class User extends Authenticatable implements Transformable
     public function bloggers()
     {
         return $this->belongsToMany(User::class, 'supervisions', 'supervisor_id', 'blogger_id')
-            ->isBlogger()
+            // ->isBlogger()
             ->withTimestamps();
     }
 
@@ -104,18 +109,23 @@ class User extends Authenticatable implements Transformable
 
     # Accessors
 
-    public function isAdmin()
+    public function getIsAdminAttribute()
     {
         return $this->user_type === UserTypeEnum::ADMIN;
     }
 
-    public function isSupervisor()
+    public function getIsSupervisorAttribute()
     {
         return $this->user_type === UserTypeEnum::SUPERVISOR;
     }
 
-    public function isBlogger()
+    public function getIsBloggerAttribute()
     {
         return $this->user_type === UserTypeEnum::BLOGGER;
+    }
+
+    public function getSupervisorIdsAttribute()
+    {
+        return $this->supervisors()->pluck('id');
     }
 }

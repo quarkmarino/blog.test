@@ -11,25 +11,36 @@ class UserPolicy
 
     public function before($user, $ability)
     {
-        return $user->isAdmin() ?: null;
+        return $user->is_admin ?: null;
     }
 
     /**
-     * Determine whether the user can create cats.
+     * Determine whether the user can list users.
      *
      * @param  \App\Models\User  $user
      * @return mixed
      */
     public function index(User $user)
     {
-        return $user->isSupervisor();
+        return $user->is_supervisor;
     }
 
     /**
-     * Determine whether the user can manage (view, update, delete) the post.
+     * Determine whether the user can create users.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Post  $post
+     * @return mixed
+     */
+    public function create(User $user)
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can manage (view, update, delete) the user.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Model\User  $model
      * @return mixed
      */
     public function manage(User $user, User $model)

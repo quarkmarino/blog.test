@@ -4,13 +4,13 @@
 
 @section('content')
 <div class="container">
-    <h5>Users</h5>
+    <h2>Users</h2>
     <div class="row">
         <div class="col-sm-12">
-            @include('partials.users._actions_bar')
+            @include('partials.users._actions')
         </div>
         <div class="col-sm-12">
-            @include('partials.users._users_table')
+            @include('partials.users._table')
         </div>
     </div>
 </div>

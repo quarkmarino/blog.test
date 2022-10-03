@@ -17,7 +17,7 @@
             @include('partials.dashboard._profile')
         </div>
         <div class="col-sm-8 col-md-7">
-            @include('partials.dashboard._stats')
+            @includeIf('partials.dashboard.stats._' . $user->user_type)
         </div>
     </div>
 </div>

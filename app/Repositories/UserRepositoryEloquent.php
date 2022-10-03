@@ -25,7 +25,18 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         return User::class;
     }
 
-    
+    /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'id',
+        'first_name' => 'like',
+        'last_name' => 'like',
+        'email' => 'like',
+        'user_type',
+        'last_login' => 'like',
+        'supervisors.full_name' => 'like',
+    ];
 
     /**
      * Boot up the repository, pushing criteria

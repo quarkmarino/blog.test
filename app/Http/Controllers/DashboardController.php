@@ -17,6 +17,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        // $user = Auth::user();
         $user = User::withCount('posts')->find(Auth::id());
 
         switch ($user->user_type) {
@@ -28,14 +29,11 @@ class DashboardController extends Controller
                 $usersCount = Queries\SupervisorQueries::usersCount();
                 $postsCount = Queries\SupervisorQueries::postsCount();
             break;
-            case UserTypeEnum::BLOGGER:
-                $postsCount = Queries\BloggerQueries::postsCount();
-            break;
         }
 
         return view('dashboard')
             ->with('user', $user)
-            ->with('usersCount', $usersCount ?? collect([]))
-            ->with('postsCount', $postsCount ?? collect([]));
+            ->with('usersCount', $usersCount ?? null)
+            ->with('postsCount', $postsCount ?? null);
     }
 }

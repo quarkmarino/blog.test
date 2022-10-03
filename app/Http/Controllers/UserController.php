@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserTypeEnum;
+use App\Http\Requests\Users;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Http\Request;
@@ -15,8 +16,6 @@ class UserController extends Controller
 
     public function __construct(UserRepository $userRepository)
     {
-        $this->authorizeResource(User::class, 'user');
-
         $this->userRepository = $userRepository;
     }
 
@@ -42,48 +41,16 @@ class UserController extends Controller
         $users = $this->userRepository
             ->paginate(config('pagination.users')/*, $columns = ['*']*/);
 
-        return view('users')->with('users', $users);
-    }
+        $supervisors = User::isSupervisor()->get();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        return User::create($request->input());
-    }
+        $searchFilters = collect(array_filter(explode(';', request()->get('search'))))->mapWithKeys(function ($filter) {
+            $filter = explode(':', $filter);
+            return [$filter[0] => $filter[1]];
+        });
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        $this->authorize('manage', $user);
-
-        $user->fill($request->input())->save();
-
-        return $user;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        $this->authorize('manage', $user);
-
-        $user->softDelete();
-
-        return response('204', 'resource deleted successfully');
+        return view('users')
+            ->with('users', $users)
+            ->with('supervisors', $supervisors)
+            ->with('searchFilters', $searchFilters);
     }
 }
