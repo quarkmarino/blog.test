@@ -10,7 +10,7 @@
   <p align="center">
     A web site allows the managements of 2 type of resources, Users, and Blog posts.
     <br />
-    <a href="https://github.com/quarkmarino/blog.test">View Demo</a>
+    <a href="http://marianoescalera.me/login">View Demo</a>
   </p>
 </p>
 
@@ -204,27 +204,27 @@ Will have access to the following pages:
 ### Installation
 
 1. Clone the repo
-   ```sh
-   git clone git@github.com:quarkmarino/blog.test.git
-   ```
+    ```sh
+    git clone git@github.com:quarkmarino/blog.test.git
+    ```
 2. Install Composer dependencies
-   ```sh
-   cd blog.test
-   composer install
-   ```
+    ```sh
+    cd blog.test
+    composer install
+    ```
 3. Run artisan migrations
-   ```sh
-   art migrate
-   ```
+    ```sh
+    art migrate
+    ```
 4. Run artisan db seeders (admin user only sedding or full db seeding)
-  4.1 Run admin user seeder only
-   ```sh
-   art db:seed --class=AdminUserSeeder
-   ```
-  4.2 Run full db seeder (with admin user included)
-5. Visit the running server
-    * open [localhost](http://localhost)
-
+    4.1 Run admin user seeder only
+    ```sh
+    art db:seed --class=AdminUserSeeder
+    ```
+    4.2 Run full db seeder (with admin user included)
+    ```sh
+    art db:seed
+    ```
 <!-- LICENSE -->
 ## License
 
