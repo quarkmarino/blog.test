@@ -76,8 +76,11 @@
                         contentType:"text/html; charset=UTF-8",
                         success: function(response) {
                             $(`#post-${postId}`).replaceWith(response);
+                            $('#post-edit-modal').modal('hide');
                         }
                     });
+
+                    $('#page-toast .toast-body').html('Post updated sucessfully.');
                 })
                 .fail(function(jqXHR){
                     if (jqXHR.status == 403) {
@@ -99,7 +102,7 @@
             });
 
             $('.post-edit-field').on('keypress', function(e){
-                if(e.which == 13) {
+                if(e.which == 13 && $(this).attr('id') != 'edit-description') {
                     updatePostDetails();
                 }
             });

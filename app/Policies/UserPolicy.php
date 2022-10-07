@@ -56,6 +56,7 @@ class UserPolicy
      */
     public function manage(User $user, User $model)
     {
-        return $model->id === $user->id;
+        return $model->id === $user->id
+            && (!$model->is_blogger ? true : $model->supervisors->isNotEmpty());
     }
 }

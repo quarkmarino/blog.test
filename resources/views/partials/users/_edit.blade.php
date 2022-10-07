@@ -104,6 +104,7 @@
                         contentType:"text/html; charset=UTF-8",
                         success: function(response) {
                             $(`#user-${userId}`).replaceWith(response);
+                            $('#user-edit-modal').modal('hide');
                         }
                     });
                 })

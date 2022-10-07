@@ -61,10 +61,13 @@
                             case '{{ App\Enums\UserTypeEnum::BLOGGER }}':
                                 $('.supervisor-option').prop('disabled', false);
                                 $(response.supervisor_ids).each(function(key, supervisorId){
-                                    $(`.supervisor-option[value="${supervisorId}"]`).prop('selected', true)
+                                    $(`.supervisor-option[value="${supervisorId}"]`).prop('selected', true);
                                 });
                                 break;
                         }
+
+                        $(`.supervisor-option[value="${response.id}"]`).prop('disabled', true)
+                        $(`.supervisor-option[value="${response.id}"]`).prop('selected', false)
                     }
                 });
             });

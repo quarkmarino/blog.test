@@ -33,11 +33,12 @@ class UpdateRequest extends FormRequest
                 'sometimes',
                 Rule::in(UserTypeEnum::options())
             ],
-            'supervisors' => 'array|required_if:user_type,' . UserTypeEnum::BLOGGER,
+            'supervisors' => 'array|sometimes',
             'supervisors.*' => [
                 'integer',
                 Rule::exists('users', 'id')->where(function ($users) {
-                    $users->where('user_type', '=', UserTypeEnum::SUPERVISOR);
+                    $users->where('user_type', '=', UserTypeEnum::SUPERVISOR)
+                        ->where('id', '!=', request()->user->id);
                 })
             ],
         ];

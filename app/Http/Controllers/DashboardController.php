@@ -17,8 +17,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // $user = Auth::user();
-        $user = User::withCount('posts')->find(Auth::id());
+        $user = Auth::user();
 
         switch ($user->user_type) {
             case UserTypeEnum::ADMIN:
@@ -26,6 +25,14 @@ class DashboardController extends Controller
                 $postsCount = Queries\AdminQueries::postsCount();
             break;
             case UserTypeEnum::SUPERVISOR:
+                $user = User::withCount(['posts'])->find(Auth::id());
+
+                $usersCount = Queries\SupervisorQueries::usersCount();
+                $postsCount = Queries\SupervisorQueries::postsCount();
+            break;
+            case UserTypeEnum::BLOGGER:
+                $user = User::withCount(['posts', 'supervisors'])->find(Auth::id());
+
                 $usersCount = Queries\SupervisorQueries::usersCount();
                 $postsCount = Queries\SupervisorQueries::postsCount();
             break;
