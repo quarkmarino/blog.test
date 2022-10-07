@@ -18,6 +18,7 @@ class UserObserver
     public function creating(User $user)
     {
         $user->api_token = Hash::make(Carbon::now()->toRfc2822String());
+        $user->password = Hash::make($user->password);
     }
 
     /**
