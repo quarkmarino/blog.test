@@ -28,15 +28,13 @@ class PostController extends Controller
      */
     public function store(Posts\CreateRequest $request)
     {
-        // $this->authorize('create', Post::class);
-
         $user = Auth::user();
 
         $post = new Post($request->input());
 
         return $user->posts()->save($post)
             ? $post
-            : response('resource update failed', 400);
+            : response('Post update failed', 400);
     }
 
     /**
@@ -52,7 +50,7 @@ class PostController extends Controller
 
         return $post->fill($request->input())->save()
             ? $post
-            : response('resource updated failed', 400);
+            : response('Post updated failed', 400);
     }
 
     /**
@@ -67,6 +65,6 @@ class PostController extends Controller
 
         return $post->delete()
             ? $post
-            : response('resource delete failed', 400);
+            : response('Post delete failed', 400);
     }
 }

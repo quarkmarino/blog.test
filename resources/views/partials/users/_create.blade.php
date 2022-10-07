@@ -25,21 +25,21 @@
                     <div class="form-group row">
                         <label for="first_name" class="col-sm-3 col-form-label">{{ __('user.title.first_name') }}</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control user-field" name="first_name" id="user-first_name" value="first_name">
+                            <input type="text" class="form-control user-field" name="first_name" id="user-first_name">
                             <span class="text-danger error-message first_name-errors"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="last_name" class="col-sm-3 col-form-label">{{ __('user.title.last_name') }}</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control user-field" name="last_name" id="user-last_name" value="last_name">
+                            <input type="text" class="form-control user-field" name="last_name" id="user-last_name">
                             <span class="text-danger error-message last_name-errors"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="email" class="col-sm-3 col-form-label">{{ __('user.title.email') }}</label>
                         <div class="col-sm-9">
-                            <input type="email" class="form-control user-field" name="email" id="user-email"  value="email@blog.test">
+                            <input type="email" class="form-control user-field" name="email" id="user-email">
                             <span class="text-danger error-message email-errors"></span>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                     <div class="form-group row">
                         <label for="password" class="col-sm-3 col-form-label">{{ __('user.title.password') }}</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control user-field" name="password" id="user-password"  value="secret">
+                            <input type="password" class="form-control user-field" name="password" id="user-password">
                             <span class="text-danger error-message password-errors"></span>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                     <div class="form-group row">
                         <label for="password_confirmation" class="col-sm-3 col-form-label">{{ __('user.title.password_confirmation') }}</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control user-field" name="password_confirmation" id="user-password_confirmation"  value="secret">
+                            <input type="password" class="form-control user-field" name="password_confirmation" id="user-password_confirmation">
                             <span class="text-danger error-message password_confirmation-errors"></span>
                         </div>
                     </div>

@@ -48,12 +48,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Users\UpdateRequest $request, User $user)
+    public function update(Users\UpdateRequest $request, User $model)
     {
-        $this->authorize('manage', $user);
+        $user = Auth::user();
 
-        return $user->fill($request->input())->save()
-            ? $user
+        $this->authorize('manage', $model);
+
+        $model->fill($request->input());
+
+        if ($user->is_admin) {
+            $model->forceFill($request->only('user_type'));
+        }
+
+        return $model->save()
+            ? $model
             : response('resource updated failed', 400);
     }
 

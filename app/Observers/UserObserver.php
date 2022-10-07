@@ -18,6 +18,7 @@ class UserObserver
     public function creating(User $user)
     {
         $user->api_token = Hash::make(Carbon::now()->toRfc2822String());
+        $user->password = Hash::make($user->password);
     }
 
     /**
@@ -28,10 +29,17 @@ class UserObserver
      */
     public function saved(User $user)
     {
-        if ($user->user_type == UserTypeEnum::BLOGGER && request()->has('supervisors')) {
-            $supervisor_ids = request()->input('supervisors');
+        switch ($user->user_type) {
+            case UserTypeEnum::SUPERVISOR:
+                $user->supervisors()->detach();
+                break;
+            case UserTypeEnum::BLOGGER:
+                $user->bloggers()->detach();
 
-            $user->supervisors()->sync($supervisor_ids);
+                $supervisor_ids = request()->input('supervisors', []);
+
+                $user->supervisors()->sync($supervisor_ids);
+                break;
         }
     }
 }
